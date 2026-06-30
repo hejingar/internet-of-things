@@ -1,0 +1,23 @@
+Vagrant
+Outil qui automatise la création de VMs. Au lieu de cliquer dans VirtualBox, tu écris un Vagrantfile et tu lances vagrant up.
+
+Kubernetes (K8s) — c'est quoi ?
+Un orchestrateur de conteneurs. Au lieu d'installer manuellement tes apps sur chaque serveur, tu dis à Kubernetes : "Je veux 3 copies de mon app web" — et il s'occupe de les lancer, les surveiller, les relancer si elles crashent.
+
+Analogie : Kubernetes = chef d'orchestre, tes applications = musiciens.
+
+K3s
+Une version allégée de Kubernetes (~50 Mo vs plusieurs Go). Parfaite pour apprendre, pour l'IoT, ou pour des petits clusters. Mêmes concepts, moins de ressources.
+
+kubectl
+Le télécommande de Kubernetes. Tu l'utilises pour :
+
+voir l'état du cluster (get nodes, get pods)
+déployer des apps (apply -f deployment.yaml)
+déboguer (logs, describe)
+
+pod : un container qui run l'app avec toute ses dependances (un processus, pas une vm)
+
+p1 : 2vms + cluster k3s | vagrand, vm, ssh, k3s server/agent, kubectl, nodes
+p2: 3 webapps + routage | Pods, deployments, services, ingress, replicas
+p3: CI/CD automatique | k3d, Docker, Argo CD, GitOps, namespaces.

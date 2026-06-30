@@ -1,0 +1,18 @@
+# Fichiers a pousser sur ton repo GitHub PUBLIC
+#
+# 1. Creer un repo public avec "ael-youb" dans le nom, ex:
+#    https://github.com/ael-youb/iot-ael-youb
+#
+# 2. Copier le contenu de ce dossier a la racine du repo:
+#    cp p3/manifests/* .
+#    git add namespace.yaml deployment.yaml service.yaml
+#    git commit -m "initial manifests v1"
+#    git push
+#
+# 3. Lancer l'install:
+#    cd p3/scripts && sudo ./install.sh
+#
+# 4. Changer de version en soutenance:
+#    sed -i 's/wil42\/playground:v1/wil42\/playground:v2/g' deployment.yaml
+#    git add deployment.yaml && git commit -m "v2" && git push
+#    curl http://localhost:8888/

@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+ENV["VAGRANT_DEFAULT_PROVIDER"] = "virtualbox"
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bookworm64"
+  config.vm.box_check_update = false
+
+  # Keep the default Vagrant insecure key so `ssh vagrant@IP` works without a password.
+  config.ssh.insert_key = false
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 1
+    vb.memory = 1024
+  end
+
+  SERVER_IP = "192.168.56.110"
+  WORKER_IP = "192.168.56.111"
+
+  config.vm.define "ael-youbS" do |server|
+    server.vm.hostname = "ael-youbS"
+    server.vm.network "private_network", ip: SERVER_IP
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--name", "ael-youbS"]
+    end
+
+    server.vm.provision "shell", path: "scripts/server.sh", env: {
+      "SERVER_IP" => SERVER_IP
+    }
+  end
+
+  config.vm.define "ael-youbSW" do |worker|
+    worker.vm.hostname = "ael-youbSW"
+    worker.vm.network "private_network", ip: WORKER_IP
+
+    worker.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--name", "ael-youbSW"]
+    end
+
+    worker.vm.provision "shell", path: "scripts/worker.sh", env: {
+      "SERVER_IP" => SERVER_IP
+    }
+  end
+end

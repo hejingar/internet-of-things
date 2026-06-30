@@ -1,0 +1,24 @@
+# Part 3 - tests
+
+# 1. Repo GitHub public (ael-youb dans le nom)
+#    Copier p3/manifests/* vers le repo, push sur main
+
+# 2. Installation complete
+cd ~/42/iot/p3/scripts
+sudo GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./install.sh
+
+# 3. Verification
+kubectl get ns                    # argocd, dev
+kubectl get pods -n argocd
+kubectl get pods -n dev
+kubectl get applications -n argocd
+curl http://localhost:8888/       # {"status":"ok", "message": "v1"}
+
+# 4. Argo CD UI
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+# https://localhost:8080
+
+# 5. Changement de version (soutenance)
+# sed -i 's/wil42\/playground:v1/wil42\/playground:v2/g' deployment.yaml
+# git push
+# curl http://localhost:8888/     # message v2

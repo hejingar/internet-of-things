@@ -1,0 +1,29 @@
+# frozen_string_literal: true
+
+ENV["VAGRANT_DEFAULT_PROVIDER"] = "virtualbox"
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bookworm64"
+  config.vm.box_check_update = false
+  config.ssh.insert_key = false
+
+  config.vm.synced_folder "./confs", "/vagrant/confs"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 1
+    vb.memory = 1024
+  end
+
+  SERVER_IP = "192.168.56.110"
+
+  config.vm.define "ael-youbS" do |server|
+    server.vm.hostname = "ael-youbS"
+    server.vm.network "private_network", ip: SERVER_IP
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--name", "ael-youbS"]
+    end
+
+    server.vm.provision "shell", path: "scripts/server.sh", args: [SERVER_IP]
+  end
+end

@@ -1,0 +1,13 @@
+requirements dans la vm une fois fini:
+# 1. Installer Vagrant
+sudo apt install vagrant
+# 2. Réparer VirtualBox
+sudo /sbin/vboxconfig
+# 3. Lancer le projet
+cd ~/42/iot/p1
+vagrant up
+# 4. Vérifications
+vagrant ssh ael-youbS -c "kubectl get nodes"
+ssh vagrant@192.168.56.110    # sans mot de passe
+ssh vagrant@192.168.56.111    # sans mot de passe
+vagrant ssh ael-youbS -c "ip a show enp0s8"   
