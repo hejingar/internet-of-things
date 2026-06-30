@@ -8,9 +8,21 @@ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 apt-get update -qq
 apt-get install -y -qq curl ca-certificates
 
+if [ ! -f /swapfile ]; then
+  fallocate -l 2G /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
+
 if ! command -v k3s >/dev/null 2>&1; then
   curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 \
-    --node-external-ip=${SERVER_IP} --bind-address=${SERVER_IP} --flannel-iface=eth1" sh -
+    --tls-san=${SERVER_IP} \
+    --node-external-ip=${SERVER_IP} \
+    --bind-address=${SERVER_IP} \
+    --flannel-iface=eth1 \
+    --disable metrics-server" sh -
 fi
 
 echo "Waiting for K3s..."
