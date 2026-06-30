@@ -1,7 +1,7 @@
 cd ~/42/iot/p1
 vagrant halt 2>/dev/null || true
 vagrant destroy -f
-rm -f confs/node-token
+rm -f confs/node-token confs/server-ready
 vagrant up ael-youbS
 vagrant up ael-youbSW
 vagrant ssh ael-youbS -c "kubectl get nodes"

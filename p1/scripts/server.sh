@@ -4,12 +4,13 @@ set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 SERVER_IP="${SERVER_IP:-192.168.56.110}"
 TOKEN_FILE="/vagrant/confs/node-token"
+READY_FILE="/vagrant/confs/server-ready"
 
 apt-get update -qq
 apt-get install -y -qq curl ca-certificates
 
 if [ ! -f /swapfile ]; then
-  fallocate -l 1G /swapfile
+  fallocate -l 2G /swapfile
   chmod 600 /swapfile
   mkswap /swapfile
   swapon /swapfile
@@ -42,6 +43,7 @@ fi
 mkdir -p "$(dirname "${TOKEN_FILE}")"
 cp /var/lib/rancher/k3s/server/node-token "${TOKEN_FILE}"
 chmod 644 "${TOKEN_FILE}"
+echo "ready" > "${READY_FILE}"
 
 if ! command -v kubectl >/dev/null 2>&1; then
   KUBECTL_VERSION="$(curl -fsSL https://dl.k8s.io/release/stable.txt)"
