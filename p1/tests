@@ -1,5 +1,9 @@
 cd ~/42/iot/p1
-vagrant up
+vagrant halt 2>/dev/null || true
+vagrant destroy -f
+rm -f confs/node-token
+vagrant up ael-youbS
+vagrant up ael-youbSW
 vagrant ssh ael-youbS -c "kubectl get nodes"
 vagrant ssh ael-youbS -c "ip a show eth1"
 vagrant ssh ael-youbSW -c "ip a show eth1"

@@ -8,8 +8,22 @@ TOKEN_FILE="/vagrant/confs/node-token"
 apt-get update -qq
 apt-get install -y -qq curl ca-certificates
 
+if [ ! -f /swapfile ]; then
+  fallocate -l 1G /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
+
 if ! command -v k3s >/dev/null 2>&1; then
-  curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode 644 --tls-san ${SERVER_IP} --node-ip ${SERVER_IP}" sh -
+  curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 \
+    --tls-san=${SERVER_IP} \
+    --node-external-ip=${SERVER_IP} \
+    --bind-address=${SERVER_IP} \
+    --flannel-iface=eth1 \
+    --disable traefik \
+    --disable servicelb" sh -
 fi
 
 echo "Waiting for K3s API to be ready..."
@@ -25,6 +39,7 @@ if ! k3s kubectl get nodes 2>/dev/null | grep -q "Ready"; then
   exit 1
 fi
 
+mkdir -p "$(dirname "${TOKEN_FILE}")"
 cp /var/lib/rancher/k3s/server/node-token "${TOKEN_FILE}"
 chmod 644 "${TOKEN_FILE}"
 
