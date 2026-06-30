@@ -1,4 +1,3 @@
-# Arreter P1 avant (meme IP .110)
 cd ~/42/iot/p1 && vagrant halt
 
 cd ~/42/iot/p2
@@ -20,6 +19,5 @@ curl -H "Host: app1.com" http://192.168.56.110
 curl -H "Host: app2.com" http://192.168.56.110
 curl http://192.168.56.110
 
-# Navigateur (VM correction) :
 # sudo sh -c 'echo "192.168.56.110 app1.com app2.com" >> /etc/hosts'
 # http://app1.com  http://app2.com  http://192.168.56.110
