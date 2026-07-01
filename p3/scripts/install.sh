@@ -65,9 +65,18 @@ kubectl get pods -n argocd
 kubectl get pods -n dev
 kubectl get applications -n argocd
 
+ARGOCD_PASS="$(kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath='{.data.password}' 2>/dev/null | base64 -d || true)"
+
 echo
-echo "Test: curl http://localhost:8888/"
-curl -s http://localhost:8888/ || echo "(app not ready yet — check GitHub repo is public and pushed)"
+echo "=== P3 cluster ready ==="
+echo "App:    curl http://localhost:8888/"
+curl -s http://localhost:8888/ || echo "(waiting for sync — check GitHub repo is public and pushed)"
 echo
-echo "Argo CD UI: kubectl port-forward svc/argocd-server -n argocd 8080:443"
-echo "GitHub repo expected: ${GITHUB_REPO}"
+echo "Argo CD UI:"
+echo "  kubectl port-forward svc/argocd-server -n argocd 8080:443"
+echo "  https://localhost:8080  login: admin  password: ${ARGOCD_PASS:-<see command below>}"
+if [ -z "${ARGOCD_PASS}" ]; then
+  echo "  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d; echo"
+fi
+echo "GitHub: ${GITHUB_REPO}"

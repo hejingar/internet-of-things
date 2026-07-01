@@ -1,18 +1,47 @@
-# Fichiers a pousser sur ton repo GitHub PUBLIC
+# Repo GitHub PUBLIC pour Argo CD (separe du repo du projet IoT)
 #
-# 1. Creer un repo public avec "ael-youb" dans le nom, ex:
-#    https://github.com/ael-youb/iot-ael-youb
+# Nom du repo : doit contenir ton login, ex. iot-ael-youb
+# URL : https://github.com/ael-youb/iot-ael-youb
 #
-# 2. Copier le contenu de ce dossier a la racine du repo:
-#    cp p3/manifests/* .
-#    git add namespace.yaml deployment.yaml service.yaml
-#    git commit -m "initial manifests v1"
-#    git push
+# Ce repo contient UNIQUEMENT les manifests K8s a la racine :
+#   namespace.yaml  deployment.yaml  service.yaml
 #
-# 3. Lancer l'install:
-#    cd p3/scripts && sudo ./install.sh
+# Image : wil42/playground:v1 (puis v2 en soutenance)
+# Port  : 8888
+
+# =============================================================================
+# AVANT LA CORRECTION (chez toi, une fois)
+# =============================================================================
 #
-# 4. Changer de version en soutenance:
-#    sed -i 's/wil42\/playground:v1/wil42\/playground:v2/g' deployment.yaml
-#    git add deployment.yaml && git commit -m "v2" && git push
-#    curl http://localhost:8888/
+# 1. Creer le repo vide PUBLIC sur GitHub (ael-youb dans le nom)
+#
+# 2. Pousser les manifests :
+#      cd p3/scripts
+#      chmod +x prepare-github.sh
+#      GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./prepare-github.sh
+#
+# 3. Tester une fois en local :
+#      sudo GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./install.sh
+#      curl http://localhost:8888/    # -> "message": "v1"
+#
+# 4. Sur la VM de correction, cloner aussi le repo config :
+#      git clone https://github.com/ael-youb/iot-ael-youb ~/iot-ael-youb
+#
+# =============================================================================
+# PENDANT LA CORRECTION
+# =============================================================================
+#
+# 1. Demarrer l'infra (grille : "start up the infrastructure") :
+#      cd ~/42/iot/p3/scripts
+#      sudo GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./install.sh
+#
+# 2. Montrer : kubectl get ns / pods, Argo CD UI, curl v1
+#
+# 3. DEMO LIVE (obligatoire) — modifier le repo GitHub, PAS p3/manifests/ :
+#      cd ~/iot-ael-youb
+#      sed -i 's/wil42\/playground:v1/wil42\/playground:v2/g' deployment.yaml
+#      git add deployment.yaml && git commit -m "v2" && git push
+#      # sync auto Argo CD (ou manuel dans l'UI si besoin)
+#      curl http://localhost:8888/    # -> "message": "v2"
+#
+# p3/manifests/ = modele local. La source de verite pour Argo CD = le repo GitHub.
