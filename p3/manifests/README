@@ -1,7 +1,7 @@
 # Repo GitHub PUBLIC pour Argo CD (separe du repo du projet IoT)
 #
 # Nom du repo : doit contenir ton login, ex. iot-ael-youb
-# URL : https://github.com/ael-youb/iot-ael-youb
+# URL : https://github.com/hejingar/ael-youb-iot
 #
 # Ce repo contient UNIQUEMENT les manifests K8s a la racine :
 #   namespace.yaml  deployment.yaml  service.yaml
@@ -18,14 +18,14 @@
 # 2. Pousser les manifests :
 #      cd p3/scripts
 #      chmod +x prepare-github.sh
-#      GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./prepare-github.sh
+#      GITHUB_REPO=https://github.com/hejingar/ael-youb-iot ./prepare-github.sh
 #
 # 3. Tester une fois en local :
-#      sudo GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./install.sh
+#      sudo GITHUB_REPO=https://github.com/hejingar/ael-youb-iot ./install.sh
 #      curl http://localhost:8888/    # -> "message": "v1"
 #
 # 4. Sur la VM de correction, cloner aussi le repo config :
-#      git clone https://github.com/ael-youb/iot-ael-youb ~/iot-ael-youb
+#      git clone https://github.com/hejingar/ael-youb-iot ~/iot-ael-youb
 #
 # =============================================================================
 # PENDANT LA CORRECTION
@@ -33,7 +33,7 @@
 #
 # 1. Demarrer l'infra (grille : "start up the infrastructure") :
 #      cd ~/42/iot/p3/scripts
-#      sudo GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./install.sh
+#      sudo GITHUB_REPO=https://github.com/hejingar/ael-youb-iot ./install.sh
 #
 # 2. Montrer : kubectl get ns / pods, Argo CD UI, curl v1
 #

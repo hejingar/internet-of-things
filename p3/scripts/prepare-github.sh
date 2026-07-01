@@ -4,12 +4,12 @@ set -euo pipefail
 # Prepare the PUBLIC GitHub repo Argo CD watches (run once, before correction).
 #
 # Prerequisite: create an empty public repo on GitHub with your login in the name, e.g.:
-#   https://github.com/ael-youb/iot-ael-youb
+#   https://github.com/hejingar/ael-youb-iot
 #
 # Usage:
-#   GITHUB_REPO=https://github.com/ael-youb/iot-ael-youb ./prepare-github.sh
+#   GITHUB_REPO=https://github.com/hejingar/ael-youb-iot ./prepare-github.sh
 
-GITHUB_REPO="${GITHUB_REPO:-https://github.com/ael-youb/iot-ael-youb}"
+GITHUB_REPO="${GITHUB_REPO:-https://github.com/hejingar/ael-youb-iot}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 P3_DIR="$(dirname "${SCRIPT_DIR}")"
 MANIFESTS_DIR="${P3_DIR}/manifests"

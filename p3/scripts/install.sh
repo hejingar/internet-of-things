@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-GITHUB_REPO="${GITHUB_REPO:-https://github.com/ael-youb/iot-ael-youb}"
+GITHUB_REPO="${GITHUB_REPO:-https://github.com/hejingar/ael-youb-iot}"
 CLUSTER_NAME="${CLUSTER_NAME:-iot}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 P3_DIR="$(dirname "${SCRIPT_DIR}")"
