@@ -51,10 +51,21 @@ for app in app1 app2 app3; do
   kubectl apply -f "/vagrant/confs/${app}/service.yaml"
 done
 
+echo "Waiting for Traefik..."
+for _ in $(seq 1 60); do
+  if kubectl get deploy traefik -n kube-system >/dev/null 2>&1 && \
+     kubectl wait --for=condition=available deployment/traefik -n kube-system --timeout=10s >/dev/null 2>&1; then
+    break
+  fi
+  sleep 5
+done
+
 kubectl apply -f /vagrant/confs/ingress.yaml
 
 for app in app1 app2 app3; do
   kubectl wait --for=condition=available "deployment/${app}" --timeout=300s
 done
 
+sleep 10
 echo "P2 ready on ${SERVER_IP}"
+echo "Test from VM: curl -H 'Host: app1.com' http://127.0.0.1"
