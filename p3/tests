@@ -1,42 +1,40 @@
 # =============================================================================
-# AVANT LA CORRECTION (une fois, chez toi)
+# AVANT LA CORRECTION
 # =============================================================================
 
-# 1. Creer repo public : https://github.com/hejingar/ael-youb-iot
+# 1. Creer repo public : hejingar/ael-youb-iot
 
-# 2. Pousser les manifests
+# 2. Premier push (SSH — pas de mot de passe GitHub)
+git clone git@github.com:hejingar/ael-youb-iot.git ~/iot-ael-youb
+cp ~/42/iot/p3/manifests/{namespace,deployment,service}.yaml ~/iot-ael-youb/
+cd ~/iot-ael-youb
+git add .
+git commit -m "deploy wil42/playground:v1"
+git push
+
+# 3. Test install (Argo CD lit le repo en HTTPS)
 cd ~/42/iot/p3/scripts
-chmod +x prepare-github.sh
-GITHUB_REPO=https://github.com/hejingar/ael-youb-iot ./prepare-github.sh
-
-# 3. Test complet local
 sudo GITHUB_REPO=https://github.com/hejingar/ael-youb-iot ./install.sh
 curl http://localhost:8888/
 
-# 4. Cloner le repo config sur la VM de correction (avant le jour J)
-git clone https://github.com/hejingar/ael-youb-iot ~/iot-ael-youb
+# 4. VM correction : meme clone SSH
+git clone git@github.com:hejingar/ael-youb-iot.git ~/iot-ael-youb
 
 # =============================================================================
 # PENDANT LA CORRECTION
 # =============================================================================
 
-# 1. Demarrer k3d + Argo CD + app v1
+# 1. Demarrer l'infra
 cd ~/42/iot/p3/scripts
 sudo GITHUB_REPO=https://github.com/hejingar/ael-youb-iot ./install.sh
 
-# 2. Verifications grille
+# 2. Grille
 kubectl get ns
-kubectl get pods -n argocd
 kubectl get pods -n dev
-kubectl get applications -n argocd
 curl http://localhost:8888/
-
-# 3. Argo CD UI
 kubectl port-forward svc/argocd-server -n argocd 8080:443
-# https://localhost:8080  login: admin
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d; echo
 
-# 4. DEMO LIVE : push v2 sur le repo GitHub (pas le repo iot)
+# 3. DEMO LIVE — push v2 (SSH)
 cd ~/iot-ael-youb
 sed -i 's/wil42\/playground:v1/wil42\/playground:v2/g' deployment.yaml
 git add deployment.yaml && git commit -m "v2" && git push
